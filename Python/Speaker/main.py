@@ -13,7 +13,8 @@ pygame.init()
 mixer.init()
 
 # Map the folder path so that the OS makes sure to go to the folder with your music
-folder_path = "C:\Users\deeja\Downloads\Abaddon-main\Abaddon-main\My project\Assets\Scripts\Github\Learning\Python\Speaker\Assets"
+# make sure the \ turns into \\
+folder_path = "C:\\Users\\deeja\\Downloads\\Abaddon-main\\Abaddon-main\\My project\\Assets\\Scripts\\Github\\Learning\\Python\\Speaker\\Assets"
 
 # Create the class of Audio
 class Audio():
@@ -131,3 +132,5 @@ while loop:
         pygame.mixer_music.pause() if pygame.mixer_music.get_busy() else pygame.mixer_music.unpause()
     elif keys[K_h]:
         print("Left (-) or Right (+) to change songs, Up to play/pause, Q to quit, H for this message to show again")
+    
+pygame.quit()
