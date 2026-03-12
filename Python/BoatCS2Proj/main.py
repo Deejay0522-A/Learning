@@ -1,6 +1,10 @@
 from pygame import *
 from controls import *
+from RPi.GPIO import *
 import time
+
+
+#setup CMDS
 
 #variables
 throttle = 0
