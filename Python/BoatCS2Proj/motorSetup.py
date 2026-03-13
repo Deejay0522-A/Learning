@@ -9,3 +9,5 @@ class GpioSetup():
             setmode(BCM)
         else:
             setmode(BOARD)
+
+BoardSetup = GpioSetup()

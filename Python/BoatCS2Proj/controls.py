@@ -1,11 +1,12 @@
 from pygame import *
-from RPi.GPIO import * #type: ignore
+#from RPi.GPIO import * #type: ignore
+import time as stopper
 
 class Pin():
-    def __init__(self, state, pinNum):
+    """def __init__(self, state, pinNum):
         self.state = state
         setup(pinNum, OUT)
-        pass
+        pass"""
 
     def ChangeState(self):
         if self.state:
@@ -17,25 +18,22 @@ class Pin():
 class Functions():
     #create functions
     @staticmethod
-    def ThrottleControlUp(pwr):
-        pwr += 1
-        time.sleep(0.1)
-        print("throttle up")
+    def ThrottleControl(pwr: int, ctrl: bool):
+        if ctrl:
+            pwr += 1
+            print("throttle up")
+        elif not ctrl:
+            pwr -= 1
+            print("throttle down")
+        stopper.sleep(0.1)
         return pwr
     
     @staticmethod
-    def ThrottleControlDown(pwr):
-        pwr += 1
-        time.sleep(0.1)
-        print("Throttle down")
-        return pwr
-    
-    @staticmethod
-    def LeftMotor(bInput):
+    def LeftMotor(bInput, dir):
         #Left motor GPIO
         return
     @staticmethod
-    def RightMotor(bInput):
+    def RightMotor(bInput, dir):
         #Left motor GPIO
         return
 
