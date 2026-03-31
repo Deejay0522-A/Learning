@@ -6,8 +6,8 @@ class Pin():
     """def __init__(self, state, pinNum):
         self.state = state
         setup(pinNum, OUT)
-        pass
-"""
+        pass"""
+
     def ChangeState(self):
         if self.state:
             self.state = False
@@ -32,9 +32,12 @@ class Functions():
         return pwr
     
     @staticmethod
-    def MotorSet(bInput, dir):
-        #motor GPIO
+    def LeftMotor(bInput, dir):
+        #Left motor GPIO
         return
-
+    @staticmethod
+    def RightMotor(bInput, dir):
+        #Right motor GPIO
+        return
 
 Controller = Functions()
