@@ -1,8 +1,7 @@
-from pygame import *
+from pygame import * # pyright: ignore[reportWildcardImportFromLibrary]
 from controls import *
 #from motorSetup import *
 # from RPi.GPIO import * #type: ignore
-import time
 
 
 #setup CMDS
