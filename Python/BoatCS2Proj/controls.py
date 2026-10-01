@@ -1,19 +1,41 @@
-from pygame import *
-#from RPi.GPIO import * #type: ignore
+from pygame import * #type: ignore
+from RPi.GPIO import * #type: ignore
+from gpiozero import Servo
+from gpiozero.pins.pigpio import PiGPIOFactory
+from os import * # type: ignore
+import subprocess
 import time as stopper
 
-class Pin():
-    """def __init__(self, state, pinNum):
-        self.state = state
-        setup(pinNum, OUT)
-        pass
-"""
-    def ChangeState(self):
-        if self.state:
-            self.state = False
-        else:
-            self.state = True
+setmode(BCM)
 
+#password = ""
+#sudoProcess = subprocess.Popen(f"sudo pigpiod")
+#sudoProcess.stdin.write(f"{password}\n")
+#sudoProcess.stdin.flush()
+#procOutput, procError = sudoProcess.communicate()
+
+my_factory = PiGPIOFactory()
+servo = Servo(4, pin_factory = my_factory)
+
+class Pin():
+    def __init__(self, pinNum):
+        self.state = False
+        self.pinNum = pinNum
+        setup(pinNum, OUT)
+        output(pinNum, LOW)
+        pass
+    def ChangeState(self, newState):
+        if newState:
+            self.state = True
+            output(self.pinNum, HIGH)
+        else:
+            self.state = False
+            output(self.pinNum, LOW)
+
+in1 = Pin(21)
+in2 = Pin(20)
+in3 = Pin(16)
+in4 = Pin(26)
 
 class Functions():
     #create functions
@@ -32,9 +54,33 @@ class Functions():
         return pwr
     
     @staticmethod
-    def MotorSet(bInput, dir):
-        #motor GPIO
-        return
+    def MotorSet(dir: str):
+        if dir.lower() == 'forward':
+            in1.ChangeState(True)
+            in4.ChangeState(True)
+            
+        elif dir.lower() == 'backward':
+            in2.ChangeState(True)
+            in3.ChangeState(True)
+        
+        else:
+            in1.ChangeState(False)
+            in2.ChangeState(False)
+            in3.ChangeState(False)
+            in4.ChangeState(False)
+
+        print(in1,in2,in3,in4) 
+    
+    @staticmethod
+    def RudderSet(dir):
+        print("rudder change")
+
+        if dir == "Left":
+            servo.value = -1
+        elif dir == "Right":
+            servo.value = 1
+        elif not dir:
+            servo.value = 0
 
 
 Controller = Functions()
