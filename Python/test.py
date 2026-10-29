@@ -1,4 +1,3 @@
-something = int(input("Youre a faggot"))
+import random
 
-if something == 1:
-    print("Youre still a faggot")
+print(list(range(1,18)))
