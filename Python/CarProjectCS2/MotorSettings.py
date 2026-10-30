@@ -7,7 +7,7 @@ from pathlib import Path
 
 SAVESFILE = Path(__file__).parent / "saves"
 
-
+sessionName = ""
 settings = {}
 
 motors = {}
@@ -65,6 +65,7 @@ class Pin():
         else:
             self.state = False
             output(self.pinNum, LOW)
-
-for m in settings["motors"]:
-    print(m)
+t = 0
+for k, m in settings["motors"][f"motor{t}"]:
+    t += 1
+    Pin(int(m))
