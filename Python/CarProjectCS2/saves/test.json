@@ -1,0 +1,7 @@
+{
+    "key": "test",
+    "motors": {
+        "motor1": "1",
+        "motor2": "2"
+    }
+}
