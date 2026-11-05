@@ -1,71 +1,48 @@
-#from RPi.GPIO import * #type: ignore
-#from gpiozero import Servo # type: ignore
-#from gpiozero.pins.pigpio import PiGPIOFactory # type: ignore
-import json
-import os
-from pathlib import Path
+from pygame import * #type: ignore
+import RPi.GPIO as GPIO #type: ignore
+from gpiozero import Servo
+from gpiozero.pins.pigpio import PiGPIOFactory
+from os import * # type: ignore
+import subprocess
+import time as stopper
 
-SAVESFILE = Path(__file__).parent / "saves"
-
-sessionName = ""
-settings = {}
-
-motors = {}
-
-# Inputs
-session = input(f"Type your previous session's key or press Enter to make a new one.\n")
-
-savedSettings = {}
-
-if session != "":
-    for save in SAVESFILE.glob("*.json"):
-        try:
-            with save.open() as saveFile:
-                data = json.load(saveFile)
-        except (OSError, json.JSONDecodeError):
-            continue
-        if isinstance(data, dict) and data.get("key") == session:
-            savedSettings = data
-            break
-
-if savedSettings:
-    settings = savedSettings
-    motors = settings.get("motors", {})
-else:
-    sessionName = input("Enter a session key. \n")
-    settings["key"] = sessionName
-    motorNums = int(input("How many motors are present?\n"))
-    for i in range(1, motorNums + 1):
-        loop = i
-        motorPin = input(f"What pin is motor{i}?\n")
-        motors[f"motor{i}"] = motorPin
-    settings["motors"] = motors
-
-    print(settings)
-
-with open(SAVESFILE / f"{sessionName}.json", "w", encoding="utf-8") as file:
-    json.dump(settings, file, indent=4)
-
-print(f"File created as: {sessionName}.json")
-
-
-# Setting up via settings
-
-class Pin():
+class Pin:
     def __init__(self, pinNum):
         self.state = False
         self.pinNum = pinNum
-        setup(pinNum, OUT)
-        output(pinNum, LOW)
+        GPIO.setup(pinNum, GPIO.OUT)
+        GPIO.output(pinNum, GPIO.LOW)
         pass
     def ChangeState(self, newState):
-        if newState:
-            self.state = True
-            output(self.pinNum, HIGH)
+        self.state = bool(newState)
+        GPIO.output(
+            self.pinNum,
+            GPIO.HIGH if self.state else GPIO.LOW,
+        )
+
+my_factory = PiGPIOFactory()
+servo = Servo(5, pin_factory = my_factory)
+
+# change pins
+
+motor1Forward = Pin(1)
+motor1Backward = Pin(2)
+motor2Forward = Pin(3)
+motor2Backward = Pin(4)
+
+class Controls:
+    @staticmethod
+    def Movement(dir : str):
+        if dir.lower() == 'forward':
+            motor1Forward.ChangeState(True)
+            motor2Forward.ChangeState(True)
+            
+        elif dir.lower() == 'backward':
+            motor1Backward.ChangeState(True)
+            motor2Backward.ChangeState(True)
+        
         else:
-            self.state = False
-            output(self.pinNum, LOW)
-t = 0
-for k, m in settings["motors"][f"motor{t}"]:
-    t += 1
-    Pin(int(m))
+            motor1Forward.ChangeState(False)
+            motor1Backward.ChangeState(False)
+            motor2Forward.ChangeState(False)
+            motor2Backward.ChangeState(False)
