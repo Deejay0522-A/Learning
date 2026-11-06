@@ -24,6 +24,15 @@ while running:
         if e.type == pygame.QUIT:
             running = False
             break
+        if e.type == pygame.KEYDOWN:
+            if e.key == K_w:
+                Controls.Movement("forward")
+            elif e.key == K_s:
+                Controls.Movement("backward")
+            elif e.key == K_a:
+                Controls.Rotation("left")
+            elif e.key == K_a:
+                Controls.Rotation("right")
 
     x = controller.get_axis(0)
     y = controller.get_axis(1)

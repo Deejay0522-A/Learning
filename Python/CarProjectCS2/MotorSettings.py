@@ -46,3 +46,12 @@ class Controls:
             motor1Backward.ChangeState(False)
             motor2Forward.ChangeState(False)
             motor2Backward.ChangeState(False)
+    
+    @staticmethod
+    def Rotation(dir : str):
+        if dir == "Left":
+            servo.value = -1
+        elif dir == "Right":
+            servo.value = 1
+        elif not dir:
+            servo.value = 0
