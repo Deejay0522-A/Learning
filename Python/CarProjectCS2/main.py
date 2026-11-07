@@ -2,7 +2,9 @@ import pygame
 
 pygame.init()
 
-access = input("Which type of control are you using? \ncontroller = controller input \nkeyboard = keyboard input")
+access = input(
+    "Which type of control are you using? \ncontroller = controller input \nkeyboard = keyboard input"
+)
 
 if access == "controller":
     pygame.joystick.init()
@@ -12,7 +14,7 @@ elif access == "keyboard":
     pass
 
 controller = pygame.joystick.Joystick(0)
-screen = pygame.display.set_mode((640,480))
+screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
 controller.init()
 

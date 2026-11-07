@@ -1,6 +1,6 @@
-#from RPi.GPIO import * #type: ignore
-#from gpiozero import Servo # type: ignore
-#from gpiozero.pins.pigpio import PiGPIOFactory # type: ignore
+# from RPi.GPIO import * #type: ignore
+# from gpiozero import Servo # type: ignore
+# from gpiozero.pins.pigpio import PiGPIOFactory # type: ignore
 import json
 import os
 from pathlib import Path
@@ -51,13 +51,15 @@ print(f"File created as: {sessionName}.json")
 
 # Setting up via settings
 
-class Pin():
+
+class Pin:
     def __init__(self, pinNum):
         self.state = False
         self.pinNum = pinNum
         setup(pinNum, OUT)
         output(pinNum, LOW)
         pass
+
     def ChangeState(self, newState):
         if newState:
             self.state = True
@@ -65,6 +67,8 @@ class Pin():
         else:
             self.state = False
             output(self.pinNum, LOW)
+
+
 t = 0
 for k, m in settings["motors"][f"motor{t}"]:
     t += 1
