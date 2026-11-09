@@ -1,13 +1,12 @@
-import time
-
+from pygame import * # type: ignore
 from controls import *
-from motorSetup import *  # type: ignore
-from pygame import *  # type: ignore
-from RPi.GPIO import *  # type: ignore
+from motorSetup import * # type: ignore
+from RPi.GPIO import * #type: ignore
+import time
 
 setmode(BCM)
 
-# GpioSetup.RudderSetup(4)
+#GpioSetup.RudderSetup(4)
 
 init()
 screen = display.set_mode((800, 600))
@@ -21,10 +20,10 @@ while running:
             running = False
         elif e.type == KEYDOWN:
             if e.key == K_w:
-                Functions.MotorSet("forward")
+                Functions.MotorSet('forward')
                 print("Forward")
             elif e.key == K_s:
-                Functions.MotorSet("backward")
+                Functions.MotorSet('backward')
             elif e.key == K_a:
                 Functions.RudderSet("Left")
             elif e.key == K_d:
@@ -34,6 +33,7 @@ while running:
                 Functions.MotorSet("off")
             elif e.key == K_a or e.key == K_d:
                 Functions.RudderSet(None)
+
 
     display.flip()
 

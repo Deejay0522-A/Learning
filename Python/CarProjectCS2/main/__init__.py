@@ -27,13 +27,13 @@ while running:
             running = False
             break
         if e.type == pygame.KEYDOWN:
-            if e.key == K_w:
+            if e.key == pygame.K_w:
                 Controls.Movement("forward")
-            elif e.key == K_s:
+            elif e.key == pygame.K_s:
                 Controls.Movement("backward")
-            elif e.key == K_a:
+            elif e.key == pygame.K_a:
                 Controls.Rotation("left")
-            elif e.key == K_a:
+            elif e.key == pygame.K_a:
                 Controls.Rotation("right")
 
     x = controller.get_axis(0)

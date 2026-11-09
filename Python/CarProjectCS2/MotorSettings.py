@@ -1,65 +1,65 @@
-# from RPi.GPIO import * #type: ignore
-# from gpiozero import Servo # type: ignore
-# from gpiozero.pins.pigpio import PiGPIOFactory # type: ignore
+#from RPi.GPIO import * #type: ignore
+#from gpiozero import Servo # type: ignore
+#from gpiozero.pins.pigpio import PiGPIOFactory # type: ignore
 import json
 import os
 from pathlib import Path
 
-SAVESFILE = Path(__file__).parent / "saves"
+class Controls():
+    #create functions
+    @staticmethod
+    def ThrottleControl(pwr: int, ctrl: bool):
+        if pwr >= 100:
+            pwr = 100
+            return pwr
+        if ctrl:
+            pwr += 1
+            print("throttle up")
+        elif not ctrl:
+            pwr -= 1
+            print("throttle down")
+        stopper.sleep(0.1)
+        return pwr
+    
+    @staticmethod
+    def MotorSet(dir: str):
+        if dir.lower() == 'forward':
+            in1.ChangeState(True)
+            in4.ChangeState(True)
+            
+        elif dir.lower() == 'backward':
+            in2.ChangeState(True)
+            in3.ChangeState(True)
+        
+        else:
+            in1.ChangeState(False)
+            in2.ChangeState(False)
+            in3.ChangeState(False)
+            in4.ChangeState(False)
 
-sessionName = ""
-settings = {}
+        print(in1,in2,in3,in4) 
+    
+    @staticmethod
+    def RudderSet(dir):
+        print("rudder change")
 
-motors = {}
-
-# Inputs
-session = input(f"Type your previous session's key or press Enter to make a new one.\n")
-
-savedSettings = {}
-
-if session != "":
-    for save in SAVESFILE.glob("*.json"):
-        try:
-            with save.open() as saveFile:
-                data = json.load(saveFile)
-        except (OSError, json.JSONDecodeError):
-            continue
-        if isinstance(data, dict) and data.get("key") == session:
-            savedSettings = data
-            break
-
-if savedSettings:
-    settings = savedSettings
-    motors = settings.get("motors", {})
-else:
-    sessionName = input("Enter a session key. \n")
-    settings["key"] = sessionName
-    motorNums = int(input("How many motors are present?\n"))
-    for i in range(1, motorNums + 1):
-        loop = i
-        motorPin = input(f"What pin is motor{i}?\n")
-        motors[f"motor{i}"] = motorPin
-    settings["motors"] = motors
-
-    print(settings)
-
-with open(SAVESFILE / f"{sessionName}.json", "w", encoding="utf-8") as file:
-    json.dump(settings, file, indent=4)
-
-print(f"File created as: {sessionName}.json")
+        if dir == "Left":
+            servo.value = -1
+        elif dir == "Right":
+            servo.value = 1
+        elif not dir:
+            servo.value = 0
 
 
 # Setting up via settings
 
-
-class Pin:
+class Pin():
     def __init__(self, pinNum):
         self.state = False
         self.pinNum = pinNum
         setup(pinNum, OUT)
         output(pinNum, LOW)
         pass
-
     def ChangeState(self, newState):
         if newState:
             self.state = True
@@ -67,9 +67,3 @@ class Pin:
         else:
             self.state = False
             output(self.pinNum, LOW)
-
-
-t = 0
-for k, m in settings["motors"][f"motor{t}"]:
-    t += 1
-    Pin(int(m))
