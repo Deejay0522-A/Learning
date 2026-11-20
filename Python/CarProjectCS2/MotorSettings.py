@@ -7,7 +7,10 @@ import os
 from pathlib import Path
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 MotorLF = Pin(21)
 MotorRF = Pin(20)
 MotorLB = Pin(16)
